@@ -50,18 +50,14 @@ def clean_data(df):
 
     # rename the columns of `categories`
     categories.columns = category_colnames
-
-    # set each value to be the last character of the string
-    for i in range(26386):
-        for j in range(36):
-            categories.iloc[i][j]=categories.iloc[i][j][-1:]
-
-    # convert column from string to numeric and preprocess these features and convert them into proper multilabel features
     
-    for i in range(26386):
-        for j in range(36):
-            categories.iloc[i][j]=proper_multilabel_feature(int(categories.iloc[i][j]))
+    for column in categories:
+        # set each value to be the last character of the string
+        categories[column] = categories[column].apply(lambda x: x[-1] if int(x[-1]) < 2 else 1)
 
+        # convert column from string to numeric
+        categories[column] = categories[column].astype(int)
+        
     # drop the original categories column from `df`
     df.drop('categories', axis=1, inplace=True)
     # concatenate the original dataframe with the new `categories` dataframe
@@ -82,7 +78,7 @@ def save_data(df, database_filename):
     '''This function saves the cleaned dataset into sql database'''
     
     engine = create_engine('sqlite:///'+database_filename)
-    df.to_sql('Cleaned_dataset1', engine, index=False)
+    df.to_sql('Cleaned_dataset3', engine, index=False)
 
 
 def main():
