@@ -3,6 +3,8 @@ warnings.filterwarnings("ignore")
 from sklearn.multiclass import OneVsRestClassifier
 from sklearn.linear_model import SGDClassifier
 from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.multioutput import MultiOutputClassifier
+from sklearn.ensemble import RandomForestClassifier
 from sqlalchemy import create_engine
 from sklearn.pipeline import Pipeline
 from sklearn.metrics import f1_score,precision_score,recall_score,accuracy_score,hamming_loss
@@ -29,7 +31,7 @@ def load_data(database_filepath):
     
     # load data from database
     engine = create_engine("sqlite:///"+database_filepath)
-    df = pd.read_sql_table('Cleaned_dataset1', engine)
+    df = pd.read_sql_table('Cleaned_dataset3', engine)
 
     # Create X and Y
     X = df['message'].values
@@ -60,13 +62,12 @@ def build_model():
     
     pipeline = Pipeline([
         ('tfidf', TfidfVectorizer(min_df=0.00009, smooth_idf=True, norm="l2",tokenizer =tokenize, sublinear_tf=False)),
-        ('clf', OneVsRestClassifier(SGDClassifier(alpha=0.00001, penalty='l1'), n_jobs=-1)),
+        ('clf', MultiOutputClassifier(RandomForestClassifier())),
     ])
 
     parameters = {
         'tfidf__ngram_range': ((1, 1),(1,2)),
-        'clf__estimator__eta0':[0.1,1],
-        'clf__estimator__learning_rate': ['optimal','invscaling',],
+        'clf__estimator__n_estimators': [10,50,],
     }
 
     cv = GridSearchCV(pipeline, param_grid=parameters , verbose = 2)
