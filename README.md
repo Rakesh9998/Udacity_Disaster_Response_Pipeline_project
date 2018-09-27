@@ -35,9 +35,14 @@ The codes are contained in the **app** folder.
 3. Go to http://0.0.0.0:3001/
 
 ### Files Used
-1.process_data.py - ETL is done 
-2.train_classifier.py - Machine learning pipeline is done
-3.run.py - code to run web app
-4.disaster_messages.csv,disaster_categories.csv - the csv files containing the messages and the categories these messages belong to
-5.DisasterResponse.db - sql database after data preprocessing
-6.classifier.pkl - pickle file in which my machine learning model is exported.
+1. process_data.py - ETL is done 
+
+2. train_classifier.py - Machine learning pipeline is done
+
+3. run.py - code to run web app
+
+4. disaster_messages.csv,disaster_categories.csv - the csv files containing the messages and the categories these messages belong to
+
+5. DisasterResponse.db - sql database after data preprocessing
+
+6. classifier.pkl - pickle file in which my machine learning model is exported.
